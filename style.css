@@ -1,0 +1,12 @@
+.finished {
+	text-decoration: line-through;
+	color: red;
+}
+body {
+	background-image: url("https://psprop.net/wp-content/uploads/HOA-AGENDA.jpg");
+	background-size: cover;
+	font-family: "serif", Georgia;
+}
+h1 {
+	font-family: "monospace", Courier;
+}
