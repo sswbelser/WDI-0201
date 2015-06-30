@@ -6,7 +6,7 @@ $(function() {
 	];
 	var $toDo=$("#to-do");
 	var $toDoList=$("#to-do-list");
-	var $deleteAll=$("#delete-all");
+	var $deleteDone=$("#delete-done");
 
 	_.each(wholeListArray, function(todo, index) {
 		$toDoList.append("<li class='item'>"+todo.name+" - "+todo.desc+"</li>");
@@ -20,14 +20,12 @@ $(function() {
 		wholeListArray.push($toDoStuff);
 		$toDoList.append("<li class='item'>"+$toDoStuff.name+" - "+$toDoStuff.desc+"</li>");
 	});
-	var $allLis=$("li");
-	$allLis.on("click", function() {
-		itemName=$(this).text();
+	$toDoList.on("click", ".item", function() {
 		$(this).toggleClass("finished");
 	});
-	$deleteAll.on("click", function() {
+	$deleteDone.on("click", function() {
 		event.preventDefault();
-		$toDoList.children("li").remove();
+		$(".finished").remove();
 		wholeListArray=[];
 	});
 });
