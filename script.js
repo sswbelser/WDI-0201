@@ -1,43 +1,68 @@
 $(function() {
-	var wholeListArray=[
-		// {name: "Clean", desc: "Vacuum the whole house"},
-		// {name: "Lawn", desc: "Mow the lawn"},
-		// {name: "Groceries", desc: "Go grocery shopping"}
-		];
-	var $toDo=$("#to-do");
-	var $toDoList=$("#to-do-list");
-	var $deleteDone=$("#delete-done");
-	var toDoTemplate = _.template($("#to-do-template").html());
+	// form to create new todo
+	var $newToDo = $('#new-todo');
 
-	_.each(wholeListArray, function(toDoAdd, index) {
-		var $toDoAdd=$(toDoTemplate(toDoAdd));
-		$toDoAdd.attr("data-index", index);
-		$toDoList.append($toDoAdd)
+	// element to hold our list of todos
+	var $toDoList = $('#todo-list');
+
+	// todo template
+	var toDoTemplate = _.template($('#todo-template').html());
+
+	// `toDos` array is our model (holds our data)
+	// contains test (or "seed") data
+	var toDos = [];
+
+	// append existing todos (from seed data) to `$toDoList`
+	// `_.each` is an "iterator" function provided by Underscore.js
+	_.each(toDos, function (todo, index) {
+		var $todo = $(toDoTemplate(todo));
+		$todo.attr('data-index', index);
+		$toDoList.append($todo);
 	});
-	$toDo.on("submit", function() {
+
+	// submit form to create new todo
+	$newToDo.on('submit', function() {
 		event.preventDefault();
-		var $toDoName=$("#to-do-name").val();
-		var $toDoDesc=$("#to-do-desc").val();
-		var $toDoStuff={name: $toDoName, desc: $toDoDesc};
-		wholeListArray.push($toDoStuff);
-		$toDoList.append("<li class='toDoLi'>"+$toDoStuff.name+" - "+$toDoStuff.desc+"</li>");
+
+		// create new todo object from form data
+		var toDoName = $('#todo-name').val();
+		var toDoDesc = $('#todo-desc').val();
+		var toDoData = {name: toDoName, desc: toDoDesc};
+
+		// store our new todo
+		toDos.push(toDoData);
+		var index = toDos.indexOf(toDoData);
+
+		// append our new todo to the page
+		var $todo = $(toDoTemplate(toDoData));
+		$todo.attr('data-index', index);
+		$toDoList.append($todo);
+
+		// reset the form
+		$newToDo[0].reset();
+		$('#todo-name').focus();
 	});
-	$toDoList.on("click", ".toDoLi", function() {
-		$(this).toggleClass("finished");
+
+	// add class to todo on click to mark it as done
+	$toDoList.on('click', '.todo-text', function() {
+		$(this).toggleClass('done');
 	});
-	$deleteDone.on("click", function() {
-		event.preventDefault();
-		_.each(wholeListArray, function(toDo, index) {
-			if ($("[data-index="+index+"]").hasClass("finished")) {
-				wholeListArray[index]=null;
-			}
+
+	// remove todo from model and view
+	$toDoList.on("click", ".delete", function () {
+		var $todo = $(this).closest(".todo");
+		var index = $todo.attr('data-index');
+
+		// remove todo from the `toDos` array (model)
+		toDos.splice(index, 1);
+
+		// remove todo from the DOM (view)
+		$todo.remove();
+
+		// reset indexes in DOM to match `toDos` array
+		// $.each loops through DOM elements
+		$('.todo').each(function(index) {
+			$(this).attr('data-index', index);
 		});
-		wholeListArray=wholeListArray.filter(function(element) {
-			return element!=null;
-		});
-		$(".finished").remove();
 	});
-	check=function() {
-		console.log(wholeListArray);
-	}
 });

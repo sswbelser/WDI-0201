@@ -1,6 +1,10 @@
-.finished {
+.todo-text:hover, .todo-text.done {
+	cursor: pointer;
 	text-decoration: line-through;
-	color: red;
+	color: red
+}
+.delete {
+	color: red
 }
 body {
 	background-image: url("https://psprop.net/wp-content/uploads/HOA-AGENDA.jpg");
