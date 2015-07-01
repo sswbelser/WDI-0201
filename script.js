@@ -1,16 +1,18 @@
 $(function() {
 	var wholeListArray=[
-	{name: "Basement", desc: "Clean out the basement and unclock dryer lint"},
-	{name: "Lawn", desc: "Mow the lawn around the house"},
-	{name: "Dust", desc: "Dust the upstairs bathroom"}
-	];
+		// {name: "Clean", desc: "Vacuum the whole house"},
+		// {name: "Lawn", desc: "Mow the lawn"},
+		// {name: "Groceries", desc: "Go grocery shopping"}
+		];
 	var $toDo=$("#to-do");
 	var $toDoList=$("#to-do-list");
 	var $deleteDone=$("#delete-done");
+	var toDoTemplate = _.template($("#to-do-template").html());
 
-	_.each(wholeListArray, function(todo, index) {
-		$toDoList.append("<li class='item'>"+todo.name+" - "+todo.desc+"</li>");
-		console.log(todo.name + " - " + todo.desc);
+	_.each(wholeListArray, function(toDoAdd, index) {
+		var $toDoAdd=$(toDoTemplate(toDoAdd));
+		$toDoAdd.attr("data-index", index);
+		$toDoList.append($toDoAdd)
 	});
 	$toDo.on("submit", function() {
 		event.preventDefault();
@@ -18,14 +20,24 @@ $(function() {
 		var $toDoDesc=$("#to-do-desc").val();
 		var $toDoStuff={name: $toDoName, desc: $toDoDesc};
 		wholeListArray.push($toDoStuff);
-		$toDoList.append("<li class='item'>"+$toDoStuff.name+" - "+$toDoStuff.desc+"</li>");
+		$toDoList.append("<li class='toDoLi'>"+$toDoStuff.name+" - "+$toDoStuff.desc+"</li>");
 	});
-	$toDoList.on("click", ".item", function() {
+	$toDoList.on("click", ".toDoLi", function() {
 		$(this).toggleClass("finished");
 	});
 	$deleteDone.on("click", function() {
 		event.preventDefault();
+		_.each(wholeListArray, function(toDo, index) {
+			if ($("[data-index="+index+"]").hasClass("finished")) {
+				wholeListArray[index]=null;
+			}
+		});
+		wholeListArray=wholeListArray.filter(function(element) {
+			return element!=null;
+		});
 		$(".finished").remove();
-		wholeListArray=[];
 	});
+	check=function() {
+		console.log(wholeListArray);
+	}
 });
