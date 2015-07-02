@@ -39,8 +39,9 @@ $(function() {
 		ToDo.prototype.save = function(toDoName, toDoDesc) {
 			ToDo.all.push(toDo);
 		}
+		toDo.save();
 
-		ToDo.prototype.save.call();
+		// ToDo.prototype.save.call();
 
 		ToDo.prototype.render = function(toDoName, toDoDesc) {
 			var index = toDos.indexOf(toDo);
@@ -48,8 +49,10 @@ $(function() {
 			$todo.attr('data-index', index);
 			$toDoList.append($todo);
 		}
+		toDo.render();
+
+		// ToDo.prototype.render.call();
 		
-		ToDo.prototype.render.call();
 		// create new todo object from form data
 		// var toDoName = $('#todo-name').val();
 		// var toDoDesc = $('#todo-desc').val();
