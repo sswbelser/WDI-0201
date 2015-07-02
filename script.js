@@ -10,7 +10,7 @@ $(function() {
 
 	// `toDos` array is our model (holds our data)
 	// contains test (or "seed") data
-	var toDos = [];
+	// var toDos = [];
 
 	// append existing todos (from seed data) to `$toDoList`
 	// `_.each` is an "iterator" function provided by Underscore.js
@@ -44,7 +44,7 @@ $(function() {
 		// ToDo.prototype.save.call();
 
 		ToDo.prototype.render = function(toDoName, toDoDesc) {
-			var index = toDos.indexOf(toDo);
+			var index = ToDo.all.indexOf(toDo);
 			var $todo = $(toDoTemplate(toDo));
 			$todo.attr('data-index', index);
 			$toDoList.append($todo);
@@ -52,7 +52,7 @@ $(function() {
 		toDo.render();
 
 		// ToDo.prototype.render.call();
-		
+
 		// create new todo object from form data
 		// var toDoName = $('#todo-name').val();
 		// var toDoDesc = $('#todo-desc').val();
@@ -84,13 +84,13 @@ $(function() {
 		var $todo = $(this).closest(".todo");
 		var index = $todo.attr('data-index');
 
-		// remove todo from the `toDos` array (model)
-		toDos.splice(index, 1);
+		// remove todo from the `ToDo.all` array (model)
+		ToDo.all.splice(index, 1);
 
 		// remove todo from the DOM (view)
 		$todo.remove();
 
-		// reset indexes in DOM to match `toDos` array
+		// reset indexes in DOM to match `ToDo.all` array
 		// $.each loops through DOM elements
 		$('.todo').each(function(index) {
 			$(this).attr('data-index', index);
