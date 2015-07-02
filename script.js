@@ -14,29 +14,57 @@ $(function() {
 
 	// append existing todos (from seed data) to `$toDoList`
 	// `_.each` is an "iterator" function provided by Underscore.js
-	_.each(toDos, function (todo, index) {
-		var $todo = $(toDoTemplate(todo));
-		$todo.attr('data-index', index);
-		$toDoList.append($todo);
-	});
+	// _.each(toDos, function (todo, index) {
+	// 	var $todo = $(toDoTemplate(todo));
+	// 	$todo.attr('data-index', index);
+	// 	$toDoList.append($todo);
+	// });
 
 	// submit form to create new todo
 	$newToDo.on('submit', function() {
 		event.preventDefault();
 
-		// create new todo object from form data
+		function ToDo(name, desc) {
+			this.name = name;
+			this.desc = desc;
+		}
+
+		ToDo.all = [];
+
 		var toDoName = $('#todo-name').val();
 		var toDoDesc = $('#todo-desc').val();
-		var toDoData = {name: toDoName, desc: toDoDesc};
+		// var toDoData = {name: toDoName, desc: toDoDesc};
+		var toDo = new ToDo(toDoName, toDoDesc)
 
-		// store our new todo
-		toDos.push(toDoData);
-		var index = toDos.indexOf(toDoData);
+		ToDo.prototype.save = function(toDoName, toDoDesc) {
+			ToDo.all.push(toDo);
+		}
+
+		ToDo.prototype.save.call();
+
+		ToDo.prototype.render = function(toDoName, toDoDesc) {
+			var index = toDos.indexOf(toDo);
+			var $todo = $(toDoTemplate(toDo));
+			$todo.attr('data-index', index);
+			$toDoList.append($todo);
+		}
+		
+		ToDo.prototype.render.call();
+		// create new todo object from form data
+		// var toDoName = $('#todo-name').val();
+		// var toDoDesc = $('#todo-desc').val();
+		// var toDoData = {name: toDoName, desc: toDoDesc};
+
+ 		// store our new todo
+		// toDos.push(toDoData);
+
+		// var index = toDos.indexOf(toDoData);
 
 		// append our new todo to the page
-		var $todo = $(toDoTemplate(toDoData));
-		$todo.attr('data-index', index);
-		$toDoList.append($todo);
+		// var $todo = $(toDoTemplate(toDoData));
+		// $todo.attr('data-index', index);
+		// $toDoList.append($todo);
+		console.log(ToDo.all);
 
 		// reset the form
 		$newToDo[0].reset();
